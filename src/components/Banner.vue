@@ -1,21 +1,34 @@
 <template>
 <div class="carousel">
-   <h3 style="float: left">Top activities around you:</h3>
+  <div class="row">
+    <div class="col-md-4">
+        <h3>Top activities around you:</h3>
+    </div>
+    <div class="col-md-offset-6 col-md-2">
+      <span><a @click="toggle()" style="font-size: 14px">{{isDisplay ? 'Hide' : 'Show'}}</a></span>
+    </div>
+  </div>
+  
 <carousel :per-page="4" :paginationPadding="2">
     <slide v-for="(place,index) in places" :key="index">
-      <div class="casing">
-        <div class="thumbnail">
-          <img :src="place.image" alt="" style="height: 150px; width:300px">
-          <a :href="place.url" target="_blank" class="middle">
-            <p class="des">{{place.des}}</p>
-            <div class="button">Book Now</div>
-          </a>
-        </div>
-        <div class="caption">
-          <h4>{{place.title}}</h4>
+      <template>
+        <div class="casing">
+          <transition name="fade">
+            <div class="thumbnail" v-if="isDisplay">
+            <img :src="place.image" alt="" style="height: 150px; width:300px">
+            <a :href="place.url" target="_blank" class="middle">
+              <p class="des">{{place.des}}</p>
+              <div class="button">Book Now</div>
+            </a>
+          </div>
+          </transition>
           
-        </div>
-    </div>
+          <div class="caption">
+            <h4>{{place.title}}</h4>
+          </div>
+      </div>
+      </template>
+      
     </slide>
   </carousel>
 </div>
@@ -36,6 +49,8 @@ export default {
   },
   data: function() {
     return {
+      isDisplay: true,
+      places: [],
       mockData: [
         {
           title: 'Blue Mountains Day Tour',
@@ -93,8 +108,13 @@ export default {
         this.places = response.data;
       })
       .catch(e => {
-        this.places = mockData;
+        this.places = this.mockData;
       });
+  },
+  methods: {
+    toggle: function() {
+      this.isDisplay = !this.isDisplay;
+    }
   }
 };
 </script>
@@ -141,5 +161,13 @@ export default {
 }
 .thumbnail:hover .middle {
   opacity: 1;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
