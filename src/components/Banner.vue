@@ -5,7 +5,7 @@
         <div class="thumbnail">
           <img :src="place.image" alt="" style="height: 200px">
           <a :href="place.url" target="_blank" class="middle">
-            <div class="text">Read More</div>
+            <div class="text">Book now</div>
           </a>
         </div>
         <div class="caption">
@@ -30,6 +30,7 @@ export default {
   },
   data: function () {
     return {
+      isDisplay: true,
       places: [
         {
           title:"Blue Mountains Day Tour",
